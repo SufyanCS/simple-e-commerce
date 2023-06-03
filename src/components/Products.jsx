@@ -31,11 +31,20 @@ export default function Products() {
     {products.map((product) => (
       <Col key={product.id} href={`/item/${product.id}`}>
         <Card className='h-100'>
-          <div className='w-75 mx-auto mt-4'>
+          <div className='w-75 mx-auto mt-1 mt-sm-4'>
             <Card.Img src={product.image} alt={product.title} style={{ objectFit: 'contain', height: '200px' }} />
           </div>
           <Card.Body className='d-flex flex-column'>
-<Card.Title className='h-25 fs-5 fs-lg-6'>{product.title.slice(0, 50)}..</Card.Title>  <h6 className='mt-3 mb-2'>{product.category}</h6>
+          <Card.Title className='h-25 text-center 
+    text-lg-start fs-5'>
+    <span className='d-none d-lg-inline'>
+        {product.title.slice(0, 50)}..
+    </span>
+    <span className='d-inline d-lg-none fs-6'>
+        {product.title.slice(0, 50)}..
+    </span>
+</Card.Title>
+<h6 className='my-2'>{product.category}</h6>
   <hr />
   <div className='d-flex flex-column flex-sm-row justify-content-between'>
     <h5 className='font-weight-bolder-sm font-weight-bold'>{product.price} $</h5>
