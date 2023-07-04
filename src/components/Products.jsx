@@ -4,10 +4,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar,faTruckFast } from '@fortawesome/free-solid-svg-icons';
+import Navbar from './Navbar'
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [search, setSearch] = useState('');
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
       .then(res => res.json())
@@ -25,10 +27,33 @@ export default function Products() {
     }
     return stars;
   };
+
+  const handleCategoryChange = (eventKey) => {
+    setSelectedCategory(eventKey);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const titleMatch = product.title.toLowerCase().includes(search.toLowerCase());
+    const categoryMatch = !selectedCategory || product.category === selectedCategory;
+    return titleMatch && categoryMatch;
+  });
+
   return (
+    <>
+    <Navbar 
+            handleCategoryChange={handleCategoryChange}
+            selectedCategory={selectedCategory}
+            handleSearchChange={handleSearchChange}
+
+           />
+  
 <div className='flex flex-col justify-between mt-[6vw] m-1 m-sm-5'>
   <Row xs={2} sm={2} md={3} lg={4} className="g-1 g-sm-4">
-    {products.map((product) => (
+    {filteredProducts.map((product) => (
       <Col key={product.id} href={`/item/${product.id}`}>
         <Card className='h-100'>
           <div className='w-75 mx-auto mt-1 mt-sm-4'>
@@ -62,5 +87,6 @@ export default function Products() {
     ))}
   </Row>
 </div>
+</>
   );
 }
